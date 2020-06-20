@@ -23,3 +23,5 @@ We need a library that will allow us to pull thousands and thousands of tweets. 
 [Tweepy vs GetOldTweets3](https://towardsdatascience.com/how-to-scrape-tweets-from-twitter-59287e20f0f1)
 
 [twitter-scraper](https://pypi.org/project/twitter-scraper/)
+
+[GetOldTweets3 documentation](https://github.com/Mottl/GetOldTweets3)
