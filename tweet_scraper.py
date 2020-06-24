@@ -1,53 +1,52 @@
-# ------------GET OLD TWEETS 3 -----------------------
-
+'''
+pick two twitter users, AOC and Donald Trump, and classify whether 
+a tweet belongs to either of them
+'''
 import GetOldTweets3 as got
-
-# can get 10000 tweets using query search! could do this iteratively
-# a lot of different query params...customizable!!!
-
-tweetCriteria = got.manager.TweetCriteria().setQuerySearch('europe refugees')\
-                                           .setMaxTweets(10000)
-tweets = got.manager.TweetManager.getTweets(tweetCriteria)
-print(len(tweets))
-
-exit(1)
+import pandas as pd
 
 
+def get_tweets(username, date_since, max_num_tweets):
+    '''
+    Given username, date string (YYYY-MM-DD) and maximimum number of tweets,
+    returns pandas dataframe of tweets.
+    '''
+    tweetCriteria = got.manager.TweetCriteria().setUsername(username)\
+                                            .setSince(date_since)\
+                                            .setMaxTweets(max_num_tweets)\
+                                            .setEmoji("unicode")
+    tweets = got.manager.TweetManager.getTweets(tweetCriteria)
+
+    df_cols = ['id', 'permalink', 'username', 'to', 'text', 'date',
+                'retweets', 'favorites', 'mentions', 'hashtags', 'geo']
+    df = pd.DataFrame(columns=df_cols)
+
+    for tweet in tweets:
+        tweet_dict = {'id': tweet.id, 'permalink': tweet.permalink, 'username': tweet.username, 'to': tweet.to, 
+                        'text': tweet.text, 'date': tweet.date, 'retweets': tweet.retweets, 'favorites': tweet.favorites, 
+                        'mentions': tweet.mentions, 'hashtags': tweet.hashtags, 'geo': tweet.geo}
+        df = df.append(tweet_dict, ignore_index=True)
+
+    return df
 
 
+def main():
+    trump_tweets = get_tweets('realDonaldTrump', '2019-01-01', 2500)
+    aoc_tweets = get_tweets('AOC', '2019-01-01', 2500)
 
-# ----------TWITTER SCRAPER----------------------
+    print('--------------------------------TRUMP TWEETS PREVIEW---------------------------------')
+    print(trump_tweets.head(10))
 
+    print('\n\n')
 
-from twitter_scraper import get_tweets
-
-tweets = set()
-total_num_tweets = 0
-
-# must query by username or hashtag...may not be sufficiently random set of tweets
-for tweet in get_tweets('#happy', pages=25):
-    tweets.add(tweet['tweetId'])
-    total_num_tweets += 1
-
-# for tweet in tweets:
-#     print('------------------------')
-#     print('****TEXT****')
-#     print(tweet['text'])
-#     print('\n')
-
-#     print('****TIME****')
-#     print(tweet['time'])
-#     print('\n')
-
-#     print('****USERNAME****')
-#     print(tweet['username'])
-#     print('\n')
-
-#     print('------------------------')
-
-print('total num tweets: ', total_num_tweets)
-print('num unique tweets: ', len(tweets))
+    print('--------------------------------AOC TWEETS PREVIEW---------------------------------')
+    print(aoc_tweets.head(10))
 
 
+    print('num trump tweets: ', trump_tweets.shape[0])
+    print('num AOC tweets: ', aoc_tweets.shape[0])
 
+
+if __name__ == '__main__':
+    main()
 
