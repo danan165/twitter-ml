@@ -31,13 +31,17 @@ def get_tweets(username, date_since, max_num_tweets):
 
 
 def main():
-    trump_tweets = get_tweets('realDonaldTrump', '2019-01-01', 2500)
-    aoc_tweets = get_tweets('AOC', '2019-01-01', 2500)
+    date_since = '2019-01-01'
+    num_tweets = 2500
+
+    trump_tweets = get_tweets('realDonaldTrump', date_since, num_tweets)
 
     print('--------------------------------TRUMP TWEETS PREVIEW---------------------------------')
     print(trump_tweets.head(10))
 
     print('\n\n')
+
+    aoc_tweets = get_tweets('AOC', date_since, num_tweets)
 
     print('--------------------------------AOC TWEETS PREVIEW---------------------------------')
     print(aoc_tweets.head(10))
@@ -45,6 +49,15 @@ def main():
 
     print('num trump tweets: ', trump_tweets.shape[0])
     print('num AOC tweets: ', aoc_tweets.shape[0])
+
+    print('saving dataframes to pkl files...')
+    trump_df_filename = 'data/trump_' + str(num_tweets) + 'tweets_' + date_since + '.pkl'
+    trump_tweets.to_pickle(trump_df_filename)
+
+    aoc_df_filename = 'data/aoc_' + str(num_tweets) + 'tweets_' + date_since + '.pkl'
+    aoc_tweets.to_pickle(aoc_df_filename)
+    print('done')
+
 
 
 if __name__ == '__main__':
