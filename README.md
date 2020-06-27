@@ -30,6 +30,8 @@ We need a library that will allow us to pull thousands and thousands of tweets. 
 
 ## Text Processing using spaCy (WIP)
 
+*Not sure if this will be necessary: the `train_textcat.py` file has this built-in*
+
 see `text_processing.py`. Be sure to run `python -m spacy download en_core_web_sm` in your terminal before attempting to run the file.
 
 This file may use a customized [Language Processing Pipeline](https://spacy.io/usage/processing-pipelines) to process the text. 
@@ -38,4 +40,10 @@ This file may use a customized [Language Processing Pipeline](https://spacy.io/u
 
 See `train_textcat.py`, a copy of an example [text categorizer](https://spacy.io/usage/training#textcat) from the spaCy documentation. Look into spaCy's [models](https://spacy.io/usage/training) that can be trained/saved/loaded for our task.
 
-Another ider: we could create [word vectors](https://spacy.io/usage/vectors-similarity) and use a more traditional classifier?? (such as decision tree, SVM, bagging/boosting, etc).
+To run `train_textcat.py`:
+
+1. `python -m spacy download en_core_web_sm`
+
+2. `python train_textcat.py -m en_core_web_sm`
+
+Another idea: we could create [word vectors](https://spacy.io/usage/vectors-similarity) and use a more traditional classifier?? (such as decision tree, SVM, bagging/boosting, etc).

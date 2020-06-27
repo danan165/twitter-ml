@@ -27,7 +27,7 @@ def clean_tweet(tweet):
         if token.is_stop == False and str(token).isalpha() == True:
             clean_tokens.append(token)
 
-    print(clean_tokens)
+    return clean_tokens
 
 
 def main():
@@ -35,14 +35,16 @@ def main():
     aoc_df = pd.read_pickle('data/aoc_2500tweets_2019-01-01.pkl')
     trump_df = pd.read_pickle('data/trump_2500tweets_2019-01-01.pkl')
 
-    # nlp = spacy.load("en_core_web_sm")
-    # for doc in nlp.pipe(aoc_df['text']):
-    #     print(doc)
-    #     print([(ent.text, ent.label_) for ent in doc.ents])
-    #     exit(1)
+    for index, row in aoc_df.iterrows():
+        clean_tweet_tokens = clean_tweet(row['text'])
+        print(clean_tweet_tokens)
+        exit(1)
 
-    for index, row in trump_df.iterrows():
-        print(row['username'])
+    # TODO: use language processing pipeline here??
+    nlp = spacy.load("en_core_web_sm") # tagger, parser, ner
+    for doc in nlp.pipe(aoc_df['text']):
+        print(doc)
+        print([(ent.text, ent.label_) for ent in doc.ents]) # examine ner results
         exit(1)
 
 

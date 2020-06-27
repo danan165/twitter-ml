@@ -1,10 +1,19 @@
 #!/usr/bin/env python
 # coding: utf8
+
+'''
+TODO:
+1) finish editing this code to be compatible with our twitter data
+2) remove manually programmed train/eval numbers
+3) add code to test the model
+4) hyperparam search needed? (figure out what to optimize after we get model results...)
+'''
+
+
 """Train a convolutional neural network text classifier on the
 IMDB dataset, using the 
 
-TextCategorizer component. The dataset will be loaded
-automatically via Thinc's built-in dataset loader. The model is added to
+TextCategorizer component. The model is added to
 spacy.pipeline, and predictions are available via `doc.cats`. For more details,
 see the documentation:
 * Training: https://spacy.io/usage/training
@@ -19,6 +28,8 @@ import thinc.extra.datasets
 
 import spacy
 from spacy.util import minibatch, compounding
+
+import pandas as pd
 
 
 @plac.annotations(
@@ -56,8 +67,8 @@ def main(model=None, output_dir=None, n_iter=20, n_texts=2000, init_tok2vec=None
     textcat.add_label("AOC")
     textcat.add_label("realDonaldTrump")
 
-    # load the IMDB dataset
-    print("Loading IMDB data...")
+    # load the Twitter dataset
+    print("Loading Twitter data...")
     (train_texts, train_cats), (dev_texts, dev_cats) = load_data()
     train_texts = train_texts[:n_texts]
     train_cats = train_cats[:n_texts]
@@ -67,6 +78,8 @@ def main(model=None, output_dir=None, n_iter=20, n_texts=2000, init_tok2vec=None
         )
     )
     train_data = list(zip(train_texts, [{"cats": cats} for cats in train_cats]))
+
+    exit(1)
 
     # get names of other pipes to disable them during training
     pipe_exceptions = ["textcat", "trf_wordpiecer", "trf_tok2vec"]
@@ -117,13 +130,30 @@ def main(model=None, output_dir=None, n_iter=20, n_texts=2000, init_tok2vec=None
 
 
 def load_data(limit=0, split=0.8):
-    """Load data from the IMDB dataset."""
-    # Partition off part of the train data for evaluation
-    train_data, _ = thinc.extra.datasets.imdb()
+    """Load data from AOC/Trump pickle files."""
+
+    # load trump and AOC pickle files into a single dataframe
+    aoc_df = pd.read_pickle('data/aoc_2500tweets_2019-01-01.pkl')
+    aoc_df = aoc_df[['text', 'username']]
+    trump_df = pd.read_pickle('data/trump_2500tweets_2019-01-01.pkl')
+    trump_df = trump_df[['text', 'username']]
+    df = pd.concat([aoc_df, trump_df])
+    
+    # convert training data to list of tuples
+    train_data = []
+    for index, row in df.iterrows():
+        train_data.append((row['text'], row['username']))
+
+    # shuffle datapoints and split into train/test
     random.shuffle(train_data)
     train_data = train_data[-limit:]
     texts, labels = zip(*train_data)
-    cats = [{"POSITIVE": bool(y), "NEGATIVE": not bool(y)} for y in labels]
+    cats = []
+    for label in labels:
+        if label == "AOC":
+            cats.append({"AOC": True, "realDonaldTrump": False})
+        else:
+            cats.append({"AOC": False, "realDonaldTrump": True})
     split = int(len(train_data) * split)
     return (texts[:split], cats[:split]), (texts[split:], cats[split:])
 
