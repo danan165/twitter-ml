@@ -25,3 +25,17 @@ We need a library that will allow us to pull thousands and thousands of tweets. 
 [twitter-scraper](https://pypi.org/project/twitter-scraper/)
 
 [GetOldTweets3 documentation](https://github.com/Mottl/GetOldTweets3)
+
+`tweet_scraper.py` contains the code used for creating our datasets, which we store as pickle files in the `data/` folder.
+
+## Text Processing using spaCy (WIP)
+
+see `text_processing.py`. Be sure to run `python -m spacy download en_core_web_sm` in your terminal before attempting to run the file.
+
+This file may use a customized [Language Processing Pipeline](https://spacy.io/usage/processing-pipelines) to process the text. 
+
+## Predicting author of a given tweet (WIP)
+
+See `train_textcat.py`, a copy of an example [text categorizer](https://spacy.io/usage/training#textcat) from the spaCy documentation. Look into spaCy's [models](https://spacy.io/usage/training) that can be trained/saved/loaded for our task.
+
+Another ider: we could create [word vectors](https://spacy.io/usage/vectors-similarity) and use a more traditional classifier?? (such as decision tree, SVM, bagging/boosting, etc).
