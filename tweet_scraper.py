@@ -13,8 +13,7 @@ def get_tweets(username, date_since, max_num_tweets):
     '''
     tweetCriteria = got.manager.TweetCriteria().setUsername(username)\
                                             .setSince(date_since)\
-                                            .setMaxTweets(max_num_tweets)\
-                                            .setEmoji("unicode")
+                                            .setMaxTweets(max_num_tweets)
     tweets = got.manager.TweetManager.getTweets(tweetCriteria)
 
     df_cols = ['id', 'permalink', 'username', 'to', 'text', 'date',

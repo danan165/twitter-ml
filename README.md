@@ -28,13 +28,13 @@ We need a library that will allow us to pull thousands and thousands of tweets. 
 
 `tweet_scraper.py` contains the code used for creating our datasets, which we store as pickle files in the `data/` folder.
 
-## Text Processing using spaCy (WIP)
+## Predicting author of tweet using Bag of Words (WIP)
 
-*Not sure if this will be necessary: the `train_textcat.py` file has this built-in*
+see `bag_of_words.py` file. Be sure to run
 
-see `text_processing.py`. Be sure to run `python -m spacy download en_core_web_sm` in your terminal before attempting to run the file.
+`python -m spacy download en_core_web_sm`
 
-This file may use a customized [Language Processing Pipeline](https://spacy.io/usage/processing-pipelines) to process the text. 
+in your terminal before running this file.
 
 ## Predicting author of a given tweet (WIP)
 
