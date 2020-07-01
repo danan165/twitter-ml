@@ -7,6 +7,8 @@ from spacy.tokenizer import Tokenizer
 from spacy.lang.en import English
 from spacy.lemmatizer import Lemmatizer
 from spacy.lookups import Lookups
+from sklearn.svm import LinearSVC
+
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -102,6 +104,19 @@ def main():
     print(feature_matrix)
 
     # TODO: use feature matrix to train a model
+
+    X = np.array(feature_matrix)
+    Y = np.array(df['username'])
+
+    Xtrain = np.concatenate([X[0:1250], X[2500:3750]])
+    Ytrain = np.concatenate([Y[0:1250], Y[2500:3750]])
+    Xtest = np.concatenate([X[1250:2500],X[3750:]]) 
+    Ytest = np.concatenate([Y[1250:2500], Y[3750:]])
+
+    model = LinearSVC()
+    model.fit(Xtrain, Ytrain)
+    print("Train accuracy:", model.score(Xtrain, Ytrain))
+    print("Test accuracy:", model.score(Xtest, Ytest))
 
 
 if __name__=="__main__":
