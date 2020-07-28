@@ -1,4 +1,4 @@
-# Dana and Jacob's Twitter ML Project!!
+ # Dana and Jacob's Twitter ML Project!!
 
 **Goal: classify the sentiment (mood) of tweets scraped from twitter**
 
@@ -47,3 +47,11 @@ To run `train_textcat.py`:
 2. `python train_textcat.py -m en_core_web_sm`
 
 Another idea: we could create [word vectors](https://spacy.io/usage/vectors-similarity) and use a more traditional classifier?? (such as decision tree, SVM, bagging/boosting, etc).
+
+
+## Accuracy results
+
+86.2% using all 10000+ words with C=0.1
+87.1% using most important 4000 words with C=0.1
+87.4% using most important 2000 words with C=0.1
+89.3% using most important 1000 words with C=0.1
